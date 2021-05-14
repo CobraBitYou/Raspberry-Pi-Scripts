@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 # This script was created by CobraBitYou and is hosted on the GitHub repository https://github.com/CobraBitYou/Raspberry-Pi-Scripts
 # This specific script can be downloaded and start with the following commands (remove the # symbols): 
