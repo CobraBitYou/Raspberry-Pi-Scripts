@@ -30,6 +30,7 @@ if [[ "$option" = [Ss][Ee][Tt][Uu][Pp] ]]; then
 		clear
 		
 		# List the drives for the user
+		echo
 		sudo blkid | grep "sda"
 		echo
 		
@@ -57,6 +58,7 @@ if [[ "$option" = [Ss][Ee][Tt][Uu][Pp] ]]; then
 		clear
 		
 		# List the drives for the user
+		echo
 		sudo blkid | grep "sda"
 		echo
 		
