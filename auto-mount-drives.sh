@@ -43,18 +43,22 @@ if [[ "$option" = [Ss][Ee][Tt][Uu][Pp] ]]; then
 		# Get the UUID of the drive from the user
 		echo "From the above list, copy the UUID of the drive you want to automatically mount at boot."
 		echo "Note: Use the UUID not the PARTUUID or this will not work as intended."
-		read -p "Enter the UUID of the drive you want to mount automatically at boot: " uuid
+		read -p "Enter the UUID of the drive you want to mount automatically at boot: " driveuuid
 		echo
+		
+		# Get the format of the drive
+		read -p "What is the format type of the drive that you chose above? (i.e. FAT32, NTFS, etc.) " driveformat
+		echo 
 		
 		# Get the folder location to mount the drive/partition to
 		echo "You need to specify a folder to mount the drive to at boot. (i.e. /home/bill/Music)"
-		read -p "Enter the folder that you want the drive to be mounted to: " uuidfolder
+		read -p "Enter the folder that you want the drive to be mounted to: " drivefolder
 		echo 
 		
 		# Edit the fstab file
 		echo "Editing the fstab configuration file...."
 		echo "The following has been added to the /etc/fstab file:"
-		echo "UUID="$uuid" "$uuidfolder" ntfs defaults,nofail 0 0" | sudo tee -a /etc/fstab
+		echo "UUID="$driveuuid" "$drivefolder" "$driveformat" defaults,nofail 0 0" | sudo tee -a /etc/fstab
 	fi
 
 	# Based on the answer, setup a partition
@@ -74,6 +78,10 @@ if [[ "$option" = [Ss][Ee][Tt][Uu][Pp] ]]; then
 		read -p "Enter the PARTUUID of the partition you want to mount automatically at boot: " partuuid
 		echo
 		
+		# Get the format of the drive
+		read -p "What is the format type of the drive that you chose above? (i.e. FAT32, NTFS, etc.) " partformat
+		echo 
+		
 		# Get the folder location to mount the drive/partition to
 		echo "You need to specify a folder to mount the partition to at boot. (i.e. /home/bill/Music)"
 		read -p "Enter the folder that you want the partition to be mounted to: " partfolder
@@ -82,7 +90,7 @@ if [[ "$option" = [Ss][Ee][Tt][Uu][Pp] ]]; then
 		# Edit the fstab file
 		echo "Editing the fstab configuration file...."
 		echo "The following has been added to the /etc/fstab file:"
-		echo "PARTUUID="$partuuid" "$partfolder" ntfs defaults,nofail 0 0" | sudo tee -a /etc/fstab
+		echo "PARTUUID="$partuuid" "$partfolder" "$partformat" defaults,nofail 0 0" | sudo tee -a /etc/fstab
 	fi
 	
 fi
