@@ -2,7 +2,7 @@
 
 # Backup the fstab file
 if [ ! -f "/etc/fstab.bak" ]; then
-	echo "Backing up your fstab configuration file...."
+	echo "Backing up the fstab configuration file...."
 	sudo cp /etc/fstab /etc/fstab.bak
 fi
 
