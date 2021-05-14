@@ -1,5 +1,8 @@
 #! /bin/bash
 
+# This script was created by CobraBitYou and is hosted on the GitHub repository https://github.com/CobraBitYou/Raspberry-Pi-Scripts
+# This specific script can be downloaded with the following command: wget https://raw.githubusercontent.com/CobraBitYou/Raspberry-Pi-Scripts/main/auto-mount-drives.sh
+
 # Backup the fstab file
 if [ ! -f "/etc/fstab.bak" ]; then
 	echo "Backing up the fstab configuration file...."
