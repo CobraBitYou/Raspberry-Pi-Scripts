@@ -13,6 +13,9 @@ clear
 echo "Do you want to setup automatic mounting or reset fstab to the default?"
 read -p "Enter your option (setup or reset): " option
 
+# Cleanup the screen
+clear
+
 # Based on the answer, setup the fstab file
 if [[ "$option" = [Ss][Ee][Tt][Uu][Pp] ]]; then
 
