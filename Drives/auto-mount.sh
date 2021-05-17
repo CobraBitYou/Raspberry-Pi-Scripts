@@ -2,7 +2,7 @@
 
 # This specific script can be downloaded and started with the following commands: 
 # wget https://raw.githubusercontent.com/CobraBitYou/Raspberry-Pi-Scripts/main/Drives/auto-mount.sh
-# chmod +x auto-mount-drives.sh 
+# chmod +x auto-mount.sh 
 # ./auto-mount-drives.sh
 
 # Backup the fstab file
