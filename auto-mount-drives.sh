@@ -17,86 +17,67 @@ clear
 
 # Ask what the user wants to do
 echo "Do you want to setup automatic mounting or reset fstab to the default?"
-read -p "Enter your option (setup or reset): " option
+read -p "Enter your choice (setup or reset): " choice
 
 # Cleanup the screen
 clear
 
 # Based on the answer, setup the fstab file
-if [[ "$option" = [Ss][Ee][Tt][Uu][Pp] ]]; then
+if [[ "$choice" = [Ss][Ee][Tt][Uu][Pp] ]]; then
 
+	# List the drives for the user
+	echo
+	sudo blkid
+	echo
+	
+	# Get the name of the drive from the user
+	echo "From the above list, copy the name of the drive you want to automatically mount at boot."
+	echo "The drive name is the part that is similar to /dev/sda1 in the above list."
+	read -p "Enter the name of the drive you want to mount automatically at boot: " drive
+	echo
+	
+	# Get the folder location to mount the drive/partition to
+	echo "You need to specify a folder to mount the drive to at boot. (i.e. /home/bill/Music)"
+	read -p "Enter the folder that you want the drive to be mounted to: " folder
+	echo 
+	
 	# Ask what the user wants to do
 	echo "Do you want to mount an entire drive or just a partition at reboot?"
-	read -p "Enter your option (drive or part): " mount
-
+	read -p "Enter your choice (drive or part): " mount
+	
 	# Based on the answer, setup a drive
 	if [[ "$mount" = [Dd][Rr][Ii][Vv][Ee] ]]; then
-
-		# Cleanup the screen
-		clear
+	
+		# Set the mount type to the drive UUID
+		type="UUID"
 		
-		# List the drives for the user
-		echo
-		sudo blkid | grep "sda"
-		echo
-		
-		# Get the UUID of the drive from the user
-		echo "From the above list, copy the UUID of the drive you want to automatically mount at boot."
-		echo "Note: Use the UUID not the PARTUUID or this will not work as intended."
-		read -p "Enter the UUID of the drive you want to mount automatically at boot: " driveuuid
-		echo
-		
-		# Get the format of the drive
-		read -p "What is the format type of the drive that you chose above? (i.e. FAT32, NTFS, etc.) " driveformat
-		echo 
-		
-		# Get the folder location to mount the drive/partition to
-		echo "You need to specify a folder to mount the drive to at boot. (i.e. /home/bill/Music)"
-		read -p "Enter the folder that you want the drive to be mounted to: " drivefolder
-		echo 
-		
-		# Edit the fstab file
-		echo "Editing the fstab configuration file...."
-		echo "The following has been added to the /etc/fstab file:"
-		echo "UUID="$driveuuid" "$drivefolder" "$driveformat" defaults,nofail 0 0" | sudo tee -a /etc/fstab
-	fi
-
-	# Based on the answer, setup a partition
-	if [[ "$mount" = [Pp][Aa][Rr][Tt] ]]; then
-		
-		# Cleanup the screen
-		clear
-		
-		# List the drives for the user
-		echo
-		sudo blkid | grep "sda"
-		echo
-		
-		# Get the PARTUUID of the drive from the user
-		echo "From the above list, copy the PARTUUID of the partition you want to automatically mount at boot."
-		echo "Note: Use the PARTUUID not the UUID or this will not work as intended."
-		read -p "Enter the PARTUUID of the partition you want to mount automatically at boot: " partuuid
-		echo
-		
-		# Get the format of the drive
-		read -p "What is the format type of the drive that you chose above? (i.e. FAT32, NTFS, etc.) " partformat
-		echo 
-		
-		# Get the folder location to mount the drive/partition to
-		echo "You need to specify a folder to mount the partition to at boot. (i.e. /home/bill/Music)"
-		read -p "Enter the folder that you want the partition to be mounted to: " partfolder
-		echo 
-		
-		# Edit the fstab file
-		echo "Editing the fstab configuration file...."
-		echo "The following has been added to the /etc/fstab file:"
-		echo "PARTUUID="$partuuid" "$partfolder" "$partformat" defaults,nofail 0 0" | sudo tee -a /etc/fstab
+		# Get the UUID of the drive
+		uuid=$(blkid -s UUID -o value $drive)
 	fi
 	
+	# Based on the answer, setup a partition
+	if [[ "$mount" = [Pp][Aa][Rr][Tt] ]]; then
+	
+		# Set the mount type to the partition UUID
+		type="PARTUUID"
+		
+		# Get the UUID of the drive
+		uuid=$(blkid -s PARTUUID -o value $drive)
+	fi
+	
+	# Get the drive filesystem type
+	format=$(blkid -s TYPE -o value $drive)
+	echo 
+	
+	# Edit the fstab file
+	echo "Editing the fstab configuration file...."
+	echo "The following has been added to the /etc/fstab file:"
+	echo ""$type"="$uuid" "$folder" "$format" defaults,nofail 0 0" | sudo tee -a /etc/fstab
+
 fi
 
 # Based on the answer, reset the fstab file
-if [[ "$option" = [Rr][Ee][Ss][Ee][Tt] ]]; then
+if [[ "$choice" = [Rr][Ee][Ss][Ee][Tt] ]]; then
 	read -p "Are you sure you want to reset your fstab configuration? This cannot be undone. (Y/n) " reset
 
 	# If user wants to reset
@@ -110,6 +91,7 @@ if [[ "$option" = [Rr][Ee][Ss][Ee][Tt] ]]; then
 	# If user does not want to reset
 	if [[ "$reset" = [Nn] ]]; then
 		echo "The fstab configuration will not be reset. Exiting...."
+		sleep 2
 		exit
 	fi
 fi
