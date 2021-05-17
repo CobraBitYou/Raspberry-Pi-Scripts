@@ -1,7 +1,6 @@
 #! /bin/bash
 
-# This script was created by CobraBitYou and is hosted on the GitHub repository https://github.com/CobraBitYou/Raspberry-Pi-Scripts
-# This specific script can be downloaded and start with the following commands (remove the # symbols): 
+# This specific script can be downloaded and start with the following commands: 
 # wget https://raw.githubusercontent.com/CobraBitYou/Raspberry-Pi-Scripts/main/auto-mount-drives.sh
 # chmod +x auto-mount-drives.sh 
 # ./auto-mount-drives.sh
