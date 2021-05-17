@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# This specific script can be downloaded and start with the following commands: 
+# This specific script can be downloaded and started with the following commands: 
 # wget https://raw.githubusercontent.com/CobraBitYou/Raspberry-Pi-Scripts/main/auto-mount-drives.sh
 # chmod +x auto-mount-drives.sh 
 # ./auto-mount-drives.sh
